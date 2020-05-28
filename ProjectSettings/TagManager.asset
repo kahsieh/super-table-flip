@@ -4,10 +4,10 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - leftarm
-  - rightarm
-  - object
-  - floor
+  - Floor
+  - Item
+  - RightArm
+  - LeftArm
   layers:
   - Default
   - TransparentFX

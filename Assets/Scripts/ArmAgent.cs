@@ -6,30 +6,33 @@ using Unity.MLAgents.Sensors;
 
 public class ArmAgent : Agent
 {
-    public GameObject leftArm;
-    public GameObject rightArm;
-    public Collider[] leftColliders;
-    public Collider[] rightColliders;
-
-    public GameObject table;
-    public GameObject[] otherObjects;
-
-    public Dictionary<int, Vector3> idToPosition;
-    public Dictionary<int, Quaternion> idToRotation;
-
     public float speed = 100;
     public float timer = 0;
     public bool startTimer = false;
-    // Start is called before the first frame update
+
+    GameObject _leftArm;
+    GameObject _rightArm;
+    GameObject _table;
+    GameObject[] _items;
+
+    Dictionary<int, Vector3> _idToPosition;
+    Dictionary<int, Quaternion> _idToRotation;
 
     void Start()
     {
-        idToPosition = new Dictionary<int, Vector3>();
-        idToRotation = new Dictionary<int, Quaternion>();
-        foreach (GameObject obj in otherObjects)
+        // Initialize GameObject references.
+        _leftArm = GameObject.Find("Left Arm");
+        _rightArm = GameObject.Find("Right Arm");
+        _table = GameObject.Find("Table");
+        _items = GameObject.FindGameObjectsWithTag("Item");
+
+        // Initialize and populate dictionaries.
+        _idToPosition = new Dictionary<int, Vector3>();
+        _idToRotation = new Dictionary<int, Quaternion>();
+        foreach (GameObject obj in _items)
         {
-            idToPosition.Add(obj.GetInstanceID(), obj.transform.localPosition);
-            idToRotation.Add(obj.GetInstanceID(), obj.transform.rotation);
+            _idToPosition.Add(obj.GetInstanceID(), obj.transform.localPosition);
+            _idToRotation.Add(obj.GetInstanceID(), obj.transform.rotation);
         }
     }
 
@@ -44,27 +47,27 @@ public class ArmAgent : Agent
 
     public override void OnEpisodeBegin()
     {
-        //reset position
-        Debug.Log("start");
-        foreach (GameObject obj in otherObjects)
+        // Reset Table component.
+        _table.GetComponent<Table>().Reset();
+
+        // Reset item positions.
+        Debug.Log("Start");
+        foreach (GameObject obj in _items)
         {
             obj.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
             obj.GetComponent<Rigidbody>().velocity = Vector3.zero;
-            obj.transform.localPosition = idToPosition[obj.GetInstanceID()];
-            obj.transform.rotation = idToRotation[obj.GetInstanceID()];
+            obj.transform.localPosition = _idToPosition[obj.GetInstanceID()];
+            obj.transform.rotation = _idToRotation[obj.GetInstanceID()];
         }
 
-        //reset table boolean
-        table.GetComponent<table>().Reset();
-
-
-        startTimer = true;
+        // Start timer.
         timer = 0f;
+        startTimer = true;
     }
 
     public override void CollectObservations(VectorSensor sensor)
     {
-        foreach (GameObject obj in otherObjects)
+        foreach (GameObject obj in _items)
         {
             sensor.AddObservation(obj.transform.position);
             sensor.AddObservation(obj.GetComponent<Rigidbody>().velocity);
@@ -74,58 +77,63 @@ public class ArmAgent : Agent
 
     public override void OnActionReceived(float[] vectorAction)
     {
-        // Actions, size = 2
-        Vector3 controlSignal = Vector3.zero;
-      
-        controlSignal.x = vectorAction[0];
-        controlSignal.y = vectorAction[1];
-        controlSignal.z = vectorAction[2];
-        Debug.Log(controlSignal);
-        Vector3 controlSignal2 = Vector3.zero;
-        controlSignal2.x = vectorAction[3];
-        controlSignal2.y = vectorAction[4];
-        controlSignal2.z = vectorAction[5];
-        leftArm.GetComponent<Rigidbody>().AddForce(controlSignal * speed);
-        rightArm.GetComponent<Rigidbody>().AddForce(controlSignal2 * speed);
+        // Take actions.
+        Vector3 leftSignal = Vector3.zero;
+        leftSignal.x = vectorAction[0];
+        leftSignal.y = vectorAction[1];
+        leftSignal.z = vectorAction[2];
+        _leftArm.GetComponent<Rigidbody>().AddForce(leftSignal * speed);
+        Debug.Log(leftSignal);
 
+        Vector3 rightSignal = Vector3.zero;
+        rightSignal.x = vectorAction[3];
+        rightSignal.y = vectorAction[4];
+        rightSignal.z = vectorAction[5];
+        _rightArm.GetComponent<Rigidbody>().AddForce(rightSignal * speed);
 
+        // End if timeout.
         if (timer > 10f)
         {
-            // ends if timeout
             startTimer = false;
-            Debug.Log("end");
+            Debug.Log("End");
             EndEpisode();
         }
 
-        // ends if the arm moves too far away
-        //TODO  should have a contraint between the two arms 
-        if (leftArm.transform.localPosition.x > 3 || leftArm.transform.localPosition.x < -3 || leftArm.transform.localPosition.z > 3 || leftArm.transform.localPosition.z < -3 || leftArm.transform.localPosition.y > 3 || leftArm.transform.localPosition.y < -3)
-        {
-            EndEpisode();
-        }
-        if (rightArm.transform.localPosition.x > 3 || rightArm.transform.localPosition.x < -3 || rightArm.transform.localPosition.z > 3 || rightArm.transform.localPosition.z < -3 || rightArm.transform.localPosition.y > 3 || rightArm.transform.localPosition.y < -3)
+        // End if an arm moves too far away.
+        // TODO: Should have a contraint between the two arms.
+        if (_leftArm.transform.localPosition.x > 3 ||
+            _leftArm.transform.localPosition.x < -3 ||
+            _leftArm.transform.localPosition.z > 3 ||
+            _leftArm.transform.localPosition.z < -3 ||
+            _leftArm.transform.localPosition.y > 3 ||
+            _leftArm.transform.localPosition.y < -3 ||
+            _rightArm.transform.localPosition.x > 3 ||
+            _rightArm.transform.localPosition.x < -3 ||
+            _rightArm.transform.localPosition.z > 3 ||
+            _rightArm.transform.localPosition.z < -3 ||
+            _rightArm.transform.localPosition.y > 3 ||
+            _rightArm.transform.localPosition.y < -3)
         {
             EndEpisode();
         }
 
-        // giving a negative reward every timeframe - probably unnecessary
+        // Give a negative reward every timeframe (probably unnecessary).
         SetReward(-0.1f);
-    }
-
-    // for external objects use
-    public void externalSetReward(float reward)
-    {
-        SetReward(reward);
     }
 
     public override void Heuristic(float[] actionsOut)
     {
-       
         actionsOut[0] = Input.GetAxis("Horizontal");
         actionsOut[1] = Input.GetAxis("Vertical");
         actionsOut[2] = Input.GetAxis("Horizontal");
         actionsOut[3] = Input.GetAxis("Vertical");
         actionsOut[4] = Input.GetAxis("Horizontal");
         actionsOut[5] = Input.GetAxis("Vertical");
+    }
+
+    // For external objects' use.
+    public void externalSetReward(float reward)
+    {
+        SetReward(reward);
     }
 }

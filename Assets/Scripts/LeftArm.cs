@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class LeftArm : MonoBehaviour
 {
-    public float Speed = 2f;
-    public float JumpHeight = 10f;
-    public float GroundDistance = 0.2f;
-    public LayerMask GroundLayer;
+    public float speed = 2f;
+    public float jumpHeight = 10f;
+    public float groundDistance = 0.2f;
+    public LayerMask groundLayer;
 
-    private Rigidbody _body;
-    private Vector3 _direction = Vector3.zero;
+    Rigidbody _body;
+    Vector3 _direction = Vector3.zero;
 
     void Start()
     {
@@ -28,20 +28,20 @@ public class LeftArm : MonoBehaviour
         _direction.Normalize();
 
         // Jump control.
-        bool isGrounded = Physics.CheckSphere(_body.position,
-            GroundDistance, GroundLayer, QueryTriggerInteraction.Ignore);
+        bool isGrounded = Physics.CheckSphere(_body.position, groundDistance,
+            groundLayer, QueryTriggerInteraction.Ignore);
         if (Input.GetKeyDown(KeyCode.LeftShift) && isGrounded)
         {
             // Use a projectile motion equation to calculate initial y-velocity
             // needed for the body to reach the specified jump height.
-            float vyi = Mathf.Sqrt(JumpHeight * -2f * Physics.gravity.y);
+            float vyi = Mathf.Sqrt(jumpHeight * -2f * Physics.gravity.y);
             _body.AddForce(Vector3.up * vyi, ForceMode.VelocityChange);
         }
     }
 
     void FixedUpdate()
     {
-        Vector3 displacement = _direction * Speed * Time.fixedDeltaTime;
+        Vector3 displacement = _direction * speed * Time.fixedDeltaTime;
         _body.MovePosition(_body.position + displacement);
     }
 }
