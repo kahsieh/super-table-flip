@@ -1848,7 +1848,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 411231712}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6db6da25033ecb24c84d479d05270f2f, type: 3}
   m_Name: 
@@ -1857,8 +1857,8 @@ MonoBehaviour:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
   MaxStep: 10000
-  xSpeed: 150
-  ySpeed: 75
+  xSpeed: 75
+  ySpeed: 300
   zSpeed: 75
   timer: 0
   startTimer: 0
@@ -1880,7 +1880,7 @@ MonoBehaviour:
     VectorActionSize: 06000000
     VectorActionDescriptions: []
     VectorActionSpaceType: 1
-  m_Model: {fileID: 0}
+  m_Model: {fileID: 5022602860645237092, guid: fdd1dcf6010fa4d8db39f5302746466c, type: 3}
   m_InferenceDevice: 0
   m_BehaviorType: 0
   m_BehaviorName: Flip

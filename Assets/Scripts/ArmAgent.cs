@@ -122,6 +122,15 @@ public class ArmAgent : Agent
             EndEpisode();
         }
 
+        // Y Axis Bonus
+        Rigidbody rBody = _table.GetComponent<Rigidbody>();
+        Vector3 v = rBody.velocity;
+        float tableYSpeed = Mathf.Abs(v.y);
+        if(tableYSpeed > 0.2f) {
+            Debug.Log("Y Axis Reward: " + tableYSpeed);
+            SetReward(tableYSpeed*10);
+        }
+
         // Give a negative reward every timeframe (probably unnecessary).
         SetReward(-0.1f);
     }
