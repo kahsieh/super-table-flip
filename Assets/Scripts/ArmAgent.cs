@@ -6,7 +6,9 @@ using Unity.MLAgents.Sensors;
 
 public class ArmAgent : Agent
 {
-    public float speed = 100;
+    public float x_speed = 150;
+    public float y_speed = 75;
+    public float z_speed = 75;
     public float timer = 0;
     public bool startTimer = false;
 
@@ -82,17 +84,17 @@ public class ArmAgent : Agent
     {
         // Take actions.
         Vector3 leftSignal = Vector3.zero;
-        leftSignal.x = vectorAction[0];
-        leftSignal.y = vectorAction[1];
-        leftSignal.z = vectorAction[2];
-        _leftArm.GetComponent<Rigidbody>().AddForce(leftSignal * speed);
-        Debug.Log(leftSignal);
+        leftSignal.x = vectorAction[0] * x_speed;
+        leftSignal.y = vectorAction[1] * y_speed;
+        leftSignal.z = vectorAction[2] * z_speed;
+        _leftArm.GetComponent<Rigidbody>().AddForce(leftSignal);
+        //Debug.Log(leftSignal);
 
         Vector3 rightSignal = Vector3.zero;
-        rightSignal.x = vectorAction[3];
-        rightSignal.y = vectorAction[4];
-        rightSignal.z = vectorAction[5];
-        _rightArm.GetComponent<Rigidbody>().AddForce(rightSignal * speed);
+        rightSignal.x = vectorAction[3] * x_speed;
+        rightSignal.y = vectorAction[4] * y_speed;
+        rightSignal.z = vectorAction[5] * z_speed;
+        _rightArm.GetComponent<Rigidbody>().AddForce(rightSignal);
 
         // End if timeout.
         if (timer > 10f)
