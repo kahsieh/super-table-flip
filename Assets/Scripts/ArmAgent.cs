@@ -13,7 +13,7 @@ public class ArmAgent : Agent
     GameObject _leftArm;
     GameObject _rightArm;
     GameObject _table;
-    GameObject[] _items;
+    List<GameObject> _objects;
 
     Dictionary<int, Vector3> _idToPosition;
     Dictionary<int, Quaternion> _idToRotation;
@@ -24,12 +24,16 @@ public class ArmAgent : Agent
         _leftArm = GameObject.Find("Left Arm");
         _rightArm = GameObject.Find("Right Arm");
         _table = GameObject.Find("Table");
-        _items = GameObject.FindGameObjectsWithTag("Item");
+        _objects = new List<GameObject>(GameObject.FindGameObjectsWithTag("Item"));
+        _objects.Add(_leftArm);
+        _objects.Add(_rightArm);
+        _objects.Add(GameObject.Find("Left Elbow"));
+        _objects.Add(GameObject.Find("Right Elbow"));
 
         // Initialize and populate dictionaries.
         _idToPosition = new Dictionary<int, Vector3>();
         _idToRotation = new Dictionary<int, Quaternion>();
-        foreach (GameObject obj in _items)
+        foreach (GameObject obj in _objects)
         {
             _idToPosition.Add(obj.GetInstanceID(), obj.transform.localPosition);
             _idToRotation.Add(obj.GetInstanceID(), obj.transform.rotation);
@@ -41,7 +45,6 @@ public class ArmAgent : Agent
         if (startTimer)
         {
             timer += Time.deltaTime;
-            Debug.Log(timer);
         }
     }
 
@@ -52,7 +55,7 @@ public class ArmAgent : Agent
 
         // Reset item positions.
         Debug.Log("Start");
-        foreach (GameObject obj in _items)
+        foreach (GameObject obj in _objects)
         {
             obj.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
             obj.GetComponent<Rigidbody>().velocity = Vector3.zero;
@@ -67,7 +70,7 @@ public class ArmAgent : Agent
 
     public override void CollectObservations(VectorSensor sensor)
     {
-        foreach (GameObject obj in _items)
+        foreach (GameObject obj in _objects)
         {
             sensor.AddObservation(obj.transform.position);
             sensor.AddObservation(obj.GetComponent<Rigidbody>().velocity);
