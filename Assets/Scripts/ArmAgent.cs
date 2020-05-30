@@ -11,6 +11,9 @@ public class ArmAgent : Agent
     public float zSpeed = 75;
     public float timer = 0;
     public bool startTimer = false;
+    public bool playerControl = false;
+
+    public double score = 0;
 
     GameObject _leftArm;
     GameObject _rightArm;
@@ -64,7 +67,9 @@ public class ArmAgent : Agent
             obj.transform.localPosition = _idToPosition[obj.GetInstanceID()];
             obj.transform.rotation = _idToRotation[obj.GetInstanceID()];
         }
-
+        // Initialize score to 0
+        score = 0;
+        
         // Start timer.
         timer = 0f;
         startTimer = true;
@@ -128,11 +133,11 @@ public class ArmAgent : Agent
         float tableYSpeed = Mathf.Abs(v.y);
         if(tableYSpeed > 0.2f) {
             Debug.Log("Y Axis Reward: " + tableYSpeed);
-            SetReward(tableYSpeed*10);
+            setRewardAndScore(tableYSpeed*10);
         }
 
         // Give a negative reward every timeframe (probably unnecessary).
-        SetReward(-0.1f);
+        setRewardAndScore(-0.1f);
     }
 
     public override void Heuristic(float[] actionsOut)
@@ -148,6 +153,18 @@ public class ArmAgent : Agent
     // For external objects' use.
     public void externalSetReward(float reward)
     {
+        score = score + reward;
         SetReward(reward);
+    }
+
+    void setRewardAndScore(float reward)
+    {
+        score = score + reward;
+        SetReward(reward);
+    }
+
+    public double getScore() 
+    {
+        return score;
     }
 }
