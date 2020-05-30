@@ -8,8 +8,19 @@ public class Item : MonoBehaviour
     {
         if (collision.gameObject.tag == "Item" || collision.gameObject.tag == "Floor")
         {
-            GameObject.Find("Player").GetComponent<ArmAgent>().externalSetReward(1f);
+            SetReward(1f);
             Debug.Log("Item reward");
+        }
+    }
+    void SetReward(float reward) 
+    {
+        if (GameObject.Find("Player").GetComponent<ArmAgent>().enabled)
+        {
+            GameObject.Find("Player").GetComponent<ArmAgent>().externalSetReward(reward);
+        }
+        else
+        {
+            GameObject.Find("Player").GetComponent<HumanArmAgent>().externalSetReward(reward);
         }
     }
 }

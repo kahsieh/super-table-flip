@@ -5,25 +5,29 @@ using UnityEngine;
 public class ToggleControls : MonoBehaviour
 {
    public GameObject player; 
-   int n;
+   bool humanEnabled = true;
    void Start()
     {
-        n = 0;
+        //player.GetComponent<ArmAgent>().Start();
+        //player.GetComponent<HumanArmAgent>().Start();
+        //player.GetComponent<HumanArmAgent>().ResetItems();
     }
     public void OnButtonPress()
     {
       Debug.Log("Button clicked");
-      if (n == 0) 
+      if (humanEnabled) 
       {
-          n++;
-          player.GetComponent<ArmAgent>().enabled = false;
-          player.GetComponent<HumanArmAgent>().enabled = true;
+          player.GetComponent<HumanArmAgent>().ResetItems();
+          player.GetComponent<ArmAgent>().enabled = true;
+          player.GetComponent<HumanArmAgent>().enabled = false;
+          humanEnabled = false;
       }
       else
       {
-          n = 0;
-          player.GetComponent<ArmAgent>().enabled = true;
-          player.GetComponent<HumanArmAgent>().enabled = false;
+          player.GetComponent<ArmAgent>().enabled = false;
+          player.GetComponent<HumanArmAgent>().enabled = true;
+          player.GetComponent<HumanArmAgent>().ResetItems();
+          humanEnabled = true;
       }
     }
 }

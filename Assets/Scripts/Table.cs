@@ -22,13 +22,13 @@ public class Table : MonoBehaviour
         // Reward only first touch so it will learn to flip the table hard.
         if (collision.gameObject.tag == "LeftArm" && !_leftArmCollided)
         {
-            GameObject.Find("Player").GetComponent<ArmAgent>().externalSetReward(5f);
+            SetReward(5f);
             Debug.Log("LeftArm Reward");
             _leftArmCollided = true;
         }
         if (collision.gameObject.tag == "RightArm" && !_rightArmCollided)
         {
-            GameObject.Find("Player").GetComponent<ArmAgent>().externalSetReward(5f);
+            SetReward(5f);
             Debug.Log("RightArm Reward");
             _rightArmCollided = true;
         }
@@ -38,15 +38,27 @@ public class Table : MonoBehaviour
     {
         if (collision.gameObject.tag == "LeftArm" && !_leftArmExit)
         {
-            GameObject.Find("Player").GetComponent<ArmAgent>().externalSetReward(1f);
+            SetReward(1f);
             Debug.Log("LeftArm Reward 2");
             _leftArmExit = true;
         }
         if (collision.gameObject.tag == "RightArm" && !_rightArmExit)
         {
-            GameObject.Find("Player").GetComponent<ArmAgent>().externalSetReward(1f);
+            SetReward(1f);
             Debug.Log("RightArm Reward 2");
             _rightArmExit = true;
+        }
+    }
+
+    void SetReward(float reward) 
+    {
+        if (GameObject.Find("Player").GetComponent<ArmAgent>().enabled)
+        {
+            GameObject.Find("Player").GetComponent<ArmAgent>().externalSetReward(reward);
+        }
+        else
+        {
+            GameObject.Find("Player").GetComponent<HumanArmAgent>().externalSetReward(reward);
         }
     }
 }

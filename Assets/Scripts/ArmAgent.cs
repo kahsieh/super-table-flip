@@ -85,6 +85,7 @@ public class ArmAgent : Agent
 
     public override void OnActionReceived(float[] vectorAction)
     {
+        Debug.Log("Taking Action!");
         // Take actions.
         Vector3 leftSignal = Vector3.zero;
         leftSignal.x = vectorAction[0] * xSpeed;
@@ -147,15 +148,14 @@ public class ArmAgent : Agent
         actionsOut[4] = Input.GetAxis("Horizontal");
         actionsOut[5] = Input.GetAxis("Vertical");
     }
-
-    // For external objects' use.
-    public void externalSetReward(float reward)
+    void setRewardAndScore(float reward)
     {
         score = score + reward;
         SetReward(reward);
     }
 
-    void setRewardAndScore(float reward)
+    // For external objects' use.
+    public void externalSetReward(float reward)
     {
         score = score + reward;
         SetReward(reward);

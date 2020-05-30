@@ -15,6 +15,18 @@ public class ScoreBoard : MonoBehaviour
     void Update()
     {
         GetComponent<Text>().text = 
-            "Score : " + player.GetComponent<ArmAgent>().getScore().ToString("F2");
+            "Score : " + GetScore().ToString("F2");
+    }
+
+    double GetScore() 
+    {
+        if (GameObject.Find("Player").GetComponent<ArmAgent>().enabled)
+        {
+            return player.GetComponent<ArmAgent>().getScore();
+        }
+        else
+        {
+            return player.GetComponent<HumanArmAgent>().getScore();
+        }
     }
 }
