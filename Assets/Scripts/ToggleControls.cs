@@ -4,30 +4,30 @@ using UnityEngine;
 
 public class ToggleControls : MonoBehaviour
 {
-   public GameObject player; 
-   bool humanEnabled = true;
-   void Start()
+    public GameObject player;
+    bool humanEnabled = true;
+
+    void Start()
     {
-        //player.GetComponent<ArmAgent>().Start();
-        //player.GetComponent<HumanArmAgent>().Start();
-        //player.GetComponent<HumanArmAgent>().ResetItems();
     }
+
+    // Toggles between human and AI player.
     public void OnButtonPress()
     {
-      Debug.Log("Button clicked");
-      if (humanEnabled) 
-      {
-          player.GetComponent<HumanArmAgent>().ResetItems();
-          player.GetComponent<ArmAgent>().enabled = true;
-          player.GetComponent<HumanArmAgent>().enabled = false;
-          humanEnabled = false;
-      }
-      else
-      {
-          player.GetComponent<ArmAgent>().enabled = false;
-          player.GetComponent<HumanArmAgent>().enabled = true;
-          player.GetComponent<HumanArmAgent>().ResetItems();
-          humanEnabled = true;
-      }
+        Debug.Log("Button clicked");
+        if (humanEnabled)
+        {
+            player.GetComponent<HumanArmAgent>().ResetItems();
+            player.GetComponent<HumanArmAgent>().enabled = false;
+            player.GetComponent<ArmAgent>().enabled = true;
+            humanEnabled = false;
+        }
+        else
+        {
+            player.GetComponent<ArmAgent>().enabled = false;
+            player.GetComponent<HumanArmAgent>().enabled = true;
+            player.GetComponent<HumanArmAgent>().ResetItems();
+            humanEnabled = true;
+        }
     }
 }

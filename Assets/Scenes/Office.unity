@@ -6291,7 +6291,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1351382906}
   - component: {fileID: 1351382908}
-  - component: {fileID: 1351382907}
   - component: {fileID: 1351382909}
   m_Layer: 0
   m_Name: Right Arm
@@ -6316,24 +6315,6 @@ Transform:
   m_Father: {fileID: 411231718}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1351382907
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1351382905}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5284e90d45efb45678ad7a673b1302e2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 2
-  jumpHeight: 10
-  groundDistance: 0.2
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 256
 --- !u!54 &1351382908
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -10314,7 +10295,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2016067235}
   - component: {fileID: 2016067237}
-  - component: {fileID: 2016067236}
   - component: {fileID: 2016067238}
   m_Layer: 0
   m_Name: Left Arm
@@ -10339,24 +10319,6 @@ Transform:
   m_Father: {fileID: 411231718}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2016067236
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2016067234}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b2a6e0c98351493382ba34812019914, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 2
-  jumpHeight: 10
-  groundDistance: 0.2
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 256
 --- !u!54 &2016067237
 Rigidbody:
   m_ObjectHideFlags: 0
