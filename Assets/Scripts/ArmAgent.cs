@@ -11,8 +11,6 @@ public class ArmAgent : Agent
     public float zSpeed = 75;
     public float timer = 0;
     public bool startTimer = false;
-    public bool playerControl = false;
-
     public double score = 0;
 
     GameObject _leftArm;
