@@ -4,18 +4,13 @@ using UnityEngine;
 
 public class HumanArmAgent : MonoBehaviour
 {
-    public float xSpeed = 150f;
-    public float ySpeed = 75f;
-    public float zSpeed = 75f;
+    public float xSpeed = 2f;
+    public float ySpeed = 5f;
+    public float zSpeed = 2f;
+    public float jumpHeight = 15f;
     public float timer = 0f;
     public bool startTimer = false;
     public float score = 0f;
-
-    // TODO: These probably need to change.
-    public float speed = 2f;
-    public float jumpHeight = 10f;
-    public float groundDistance = 0.2f;
-    public LayerMask groundLayer;
 
     GameObject _leftArm;
     GameObject _rightArm;
@@ -74,14 +69,16 @@ public class HumanArmAgent : MonoBehaviour
         _leftDirection = Vector3.zero;
         _leftDirection.x -= Input.GetKey(KeyCode.A) ? 1 : 0;  // left
         _leftDirection.x += Input.GetKey(KeyCode.D) ? 1 : 0;  // right
+        _leftDirection.y -= Input.GetKey(KeyCode.Q) ? 1 : 0;  // down
+        _leftDirection.y += Input.GetKey(KeyCode.E) ? 1 : 0;  // up
         _leftDirection.z -= Input.GetKey(KeyCode.S) ? 1 : 0;  // forwards
         _leftDirection.z += Input.GetKey(KeyCode.W) ? 1 : 0;  // backwards
         _leftDirection.Normalize();
 
         // Jump control.
-        bool isGrounded = Physics.CheckSphere(_leftBody.position,
-            groundDistance, groundLayer, QueryTriggerInteraction.Ignore);
-        if (Input.GetKeyDown(KeyCode.LeftShift) && isGrounded)
+        // bool isGrounded = Physics.CheckSphere(_leftBody.position,
+        //     groundDistance, groundLayer, QueryTriggerInteraction.Ignore);
+        if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             // Use a projectile motion equation to calculate initial y-velocity
             // needed for the body to reach the specified jump height.
@@ -97,14 +94,16 @@ public class HumanArmAgent : MonoBehaviour
         _rightDirection = Vector3.zero;
         _rightDirection.x -= Input.GetKey(KeyCode.L) ? 1 : 0;  // left
         _rightDirection.x += Input.GetKey(KeyCode.Quote) ? 1 : 0;  // right
+        _rightDirection.y -= Input.GetKey(KeyCode.O) ? 1 : 0;  // down
+        _rightDirection.y += Input.GetKey(KeyCode.LeftBracket) ? 1 : 0;  // up
         _rightDirection.z -= Input.GetKey(KeyCode.Semicolon) ? 1 : 0;  // forwards
         _rightDirection.z += Input.GetKey(KeyCode.P) ? 1 : 0;  // backwards
         _rightDirection.Normalize();
 
         // Jump control.
-        bool isGrounded = Physics.CheckSphere(_rightBody.position,
-            groundDistance, groundLayer, QueryTriggerInteraction.Ignore);
-        if (Input.GetKeyDown(KeyCode.RightShift) && isGrounded)
+        // bool isGrounded = Physics.CheckSphere(_rightBody.position,
+        //     groundDistance, groundLayer, QueryTriggerInteraction.Ignore);
+        if (Input.GetKeyDown(KeyCode.RightShift))
         {
             // Use a projectile motion equation to calculate initial y-velocity
             // needed for the body to reach the specified jump height.
@@ -113,12 +112,18 @@ public class HumanArmAgent : MonoBehaviour
         }
     }
 
-    // TODO: This needs work need to not hard code speed.
+    // Changes the positions of the arms.
     void FixedUpdate()
     {
-        Vector3 leftDisplacement = _leftDirection * speed * Time.fixedDeltaTime;
+        Vector3 leftDisplacement = _leftDirection * Time.fixedDeltaTime;
+        leftDisplacement.x *= xSpeed;
+        leftDisplacement.y *= ySpeed;
+        leftDisplacement.z *= zSpeed;
         _leftBody.MovePosition(_leftBody.position + leftDisplacement);
-        Vector3 rightDisplacement = _rightDirection * speed * Time.fixedDeltaTime;
+        Vector3 rightDisplacement = _rightDirection * Time.fixedDeltaTime;
+        rightDisplacement.x *= xSpeed;
+        rightDisplacement.y *= ySpeed;
+        rightDisplacement.z *= zSpeed;
         _rightBody.MovePosition(_rightBody.position + rightDisplacement);
     }
 

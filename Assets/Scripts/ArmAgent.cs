@@ -6,8 +6,8 @@ using Unity.MLAgents.Sensors;
 
 public class ArmAgent : Agent
 {
-    public float xSpeed = 150f;
-    public float ySpeed = 75f;
+    public float xSpeed = 75f;
+    public float ySpeed = 300f;
     public float zSpeed = 75f;
     public float timer = 0f;
     public bool startTimer = false;
