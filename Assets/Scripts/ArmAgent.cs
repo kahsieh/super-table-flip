@@ -135,11 +135,11 @@ public class ArmAgent : Agent
         float vy = Mathf.Abs(rBody.velocity.y);
         if (vy > 0.2f) {
             Debug.Log("Y-axis bonus: " + vy);
-            SetRewardAndScore(vy * 10);
+            SetReward(vy * 10);
         }
 
         // Give a negative reward every timeframe (probably unnecessary).
-        SetRewardAndScore(-0.1f);
+        SetReward(-0.1f);
     }
 
     // public override void Heuristic(float[] actionsOut)
