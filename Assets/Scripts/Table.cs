@@ -17,36 +17,53 @@ public class Table : MonoBehaviour
         _rightArmExit = false;
     }
 
+    // +5 reward for each arm's first table touch.
     void OnCollisionEnter(Collision collision)
     {
         // Reward only first touch so it will learn to flip the table hard.
         if (collision.gameObject.tag == "LeftArm" && !_leftArmCollided)
         {
-            GameObject.Find("Player").GetComponent<ArmAgent>().externalSetReward(5f);
-            Debug.Log("LeftArm Reward");
+            SetRewardAndScore(5f);
+            Debug.Log("LeftArm/Table reward 1");
             _leftArmCollided = true;
         }
         if (collision.gameObject.tag == "RightArm" && !_rightArmCollided)
         {
-            GameObject.Find("Player").GetComponent<ArmAgent>().externalSetReward(5f);
-            Debug.Log("RightArm Reward");
+            SetRewardAndScore(5f);
+            Debug.Log("RightArm/Table reward 1");
             _rightArmCollided = true;
         }
     }
 
+    // +1 reward for finishing each arm's first table touch.
     void OnCollisionExit(Collision collision)
     {
         if (collision.gameObject.tag == "LeftArm" && !_leftArmExit)
         {
-            GameObject.Find("Player").GetComponent<ArmAgent>().externalSetReward(1f);
-            Debug.Log("LeftArm Reward 2");
+            SetRewardAndScore(1f);
+            Debug.Log("LeftArm/Table reward 2");
             _leftArmExit = true;
         }
         if (collision.gameObject.tag == "RightArm" && !_rightArmExit)
         {
-            GameObject.Find("Player").GetComponent<ArmAgent>().externalSetReward(1f);
-            Debug.Log("RightArm Reward 2");
+            SetRewardAndScore(1f);
+            Debug.Log("RightArm/Table reward 2");
             _rightArmExit = true;
+        }
+    }
+
+    // Adds the specified reward/score to the player.
+    void SetRewardAndScore(float reward)
+    {
+        if (GameObject.Find("Player").GetComponent<ArmAgent>().enabled)
+        {
+            GameObject.Find("Player").GetComponent<ArmAgent>()
+                                     .SetRewardAndScore(reward);
+        }
+        else
+        {
+            GameObject.Find("Player").GetComponent<HumanArmAgent>()
+                                     .SetRewardAndScore(reward);
         }
     }
 }

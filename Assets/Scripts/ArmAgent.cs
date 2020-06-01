@@ -6,9 +6,12 @@ using Unity.MLAgents.Sensors;
 
 public class ArmAgent : Agent
 {
-    public float speed = 100;
-    public float timer = 0;
+    public float xSpeed = 75f;
+    public float ySpeed = 300f;
+    public float zSpeed = 75f;
+    public float timer = 0f;
     public bool startTimer = false;
+    public float score = 0f;
 
     GameObject _leftArm;
     GameObject _rightArm;
@@ -48,6 +51,8 @@ public class ArmAgent : Agent
         }
     }
 
+    // Places objects back in their original positions. Also resets score and
+    // timer.
     public override void OnEpisodeBegin()
     {
         // Reset Table component.
@@ -62,12 +67,15 @@ public class ArmAgent : Agent
             obj.transform.localPosition = _idToPosition[obj.GetInstanceID()];
             obj.transform.rotation = _idToRotation[obj.GetInstanceID()];
         }
+        // Initialize score to 0
+        score = 0f;
 
         // Start timer.
         timer = 0f;
         startTimer = true;
     }
 
+    // Observe the physical state of game objects.
     public override void CollectObservations(VectorSensor sensor)
     {
         foreach (GameObject obj in _objects)
@@ -78,21 +86,23 @@ public class ArmAgent : Agent
         }
     }
 
+    // Try an action and possibly end the episode or give a reward.
     public override void OnActionReceived(float[] vectorAction)
     {
+        Debug.Log("Taking action");
+
         // Take actions.
         Vector3 leftSignal = Vector3.zero;
-        leftSignal.x = vectorAction[0];
-        leftSignal.y = vectorAction[1];
-        leftSignal.z = vectorAction[2];
-        _leftArm.GetComponent<Rigidbody>().AddForce(leftSignal * speed);
-        Debug.Log(leftSignal);
+        leftSignal.x = vectorAction[0] * xSpeed;
+        leftSignal.y = vectorAction[1] * ySpeed;
+        leftSignal.z = vectorAction[2] * zSpeed;
+        _leftArm.GetComponent<Rigidbody>().AddForce(leftSignal);
 
         Vector3 rightSignal = Vector3.zero;
-        rightSignal.x = vectorAction[3];
-        rightSignal.y = vectorAction[4];
-        rightSignal.z = vectorAction[5];
-        _rightArm.GetComponent<Rigidbody>().AddForce(rightSignal * speed);
+        rightSignal.x = vectorAction[3] * xSpeed;
+        rightSignal.y = vectorAction[4] * ySpeed;
+        rightSignal.z = vectorAction[5] * zSpeed;
+        _rightArm.GetComponent<Rigidbody>().AddForce(rightSignal);
 
         // End if timeout.
         if (timer > 10f)
@@ -120,23 +130,38 @@ public class ArmAgent : Agent
             EndEpisode();
         }
 
+        // Y-axis bonus.
+        Rigidbody rBody = _table.GetComponent<Rigidbody>();
+        float vy = Mathf.Abs(rBody.velocity.y);
+        if (vy > 0.2f) {
+            Debug.Log("Y-axis bonus: " + vy);
+            SetReward(vy * 10);
+        }
+
         // Give a negative reward every timeframe (probably unnecessary).
         SetReward(-0.1f);
     }
 
-    public override void Heuristic(float[] actionsOut)
-    {
-        actionsOut[0] = Input.GetAxis("Horizontal");
-        actionsOut[1] = Input.GetAxis("Vertical");
-        actionsOut[2] = Input.GetAxis("Horizontal");
-        actionsOut[3] = Input.GetAxis("Vertical");
-        actionsOut[4] = Input.GetAxis("Horizontal");
-        actionsOut[5] = Input.GetAxis("Vertical");
-    }
+    // public override void Heuristic(float[] actionsOut)
+    // {
+    //     actionsOut[0] = Input.GetAxis("Horizontal");
+    //     actionsOut[1] = Input.GetAxis("Vertical");
+    //     actionsOut[2] = Input.GetAxis("Horizontal");
+    //     actionsOut[3] = Input.GetAxis("Vertical");
+    //     actionsOut[4] = Input.GetAxis("Horizontal");
+    //     actionsOut[5] = Input.GetAxis("Vertical");
+    // }
 
-    // For external objects' use.
-    public void externalSetReward(float reward)
+    // Adds the specified reward/score to the player.
+    public void SetRewardAndScore(float reward)
     {
         SetReward(reward);
+        score += reward;
+    }
+
+    // Gets the reward/score from the player.
+    public double GetScore()
+    {
+        return score;
     }
 }
