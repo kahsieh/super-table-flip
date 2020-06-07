@@ -10,8 +10,8 @@ Created by Wei-Ting Chen, En-Hung (Andy) Chu, Kevin Hsieh, and Willie Wu.
 
 Links:
 
-- [Play](https://github.com/kahsieh/super-table-flip/play)
+- [Play](https://kahsieh.github.io/super-table-flip/play)
 - [Images](images)
 - [Videos](video)
 - [Report](https://docs.google.com/document/d/18lalaG3jz1HzqpqII64iDlayFPmYYvrTlDe7yALmrus/edit?usp=sharing)
-- [Source code](https://github.com/kahsieh/super-table-flip/tree/master/Assets/Super%20Table%20Flip)
+- [Source code](https://github.com/kahsieh/super-table-flip/tree/master/Super%20Table%20Flip)
