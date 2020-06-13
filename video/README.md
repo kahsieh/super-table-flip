@@ -1,5 +1,5 @@
 # Super Table Flip (╯°□°)╯︵ ┻━┻
 
-Available videos:
+## Game Play Video:
 
-- None
+<video src="./Game_Play.mov"></video>
