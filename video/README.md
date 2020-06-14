@@ -11,7 +11,7 @@ Click on an item to open the full video on YouTube.
 
 ### ML
 
-A model that drags the table and crashes itto scenery objects:
+A model that drags the table and crashes into scenery objects:
 
 [![ML Dragger](./ml-dragger.gif)](https://youtu.be/Po0ve1Ieg-U)
 

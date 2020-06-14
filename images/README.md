@@ -10,7 +10,7 @@ A game based on the arcade game _Cho Chabudai Gaeshi_.
 ### Gameplay
 
 The objective of the game is to flip the table and crash it into scenery
-objects. The score is show in the top of the screen.
+objects. The score is show at the top of the screen.
 
 ![Gameplay](./gameplay.png)
 
