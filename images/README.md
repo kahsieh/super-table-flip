@@ -1,41 +1,31 @@
 # Super Table Flip (╯°□°)╯︵ ┻━┻
+A game based on the arcade game _Cho Chabudai Gaeshi_.
 
 ## Images
 
-### Game Start:
+### Game Start
 
-![Game_Start](./Game_Start.png)
+![Game Start](./game-start.png)
 
-## Controls:
+### Gameplay
 
-![keyboard-layout](./keyboard-layout.png)
+The objective of the game is to flip the table and crash it into scenery
+objects. The score is show in the top of the screen.
 
-### Left Arm:
+![Gameplay](./gameplay.png)
 
-W: Forward
-A: Left
-S: Backward
-D: Right
-Q: Down
-E: Up
-Left Shift: Raise Hand Upwards
+### Controls
 
-### Right Arm:
+![Keyboard Layout](./keyboard-layout.png)
 
-P: Forward
-L: Left
-Semicolon: Backward
-Quotation: Right
-O: Down
-Bracket: Up
-Right Shift: Raise Hand Upwards
+|           | Left Arm   | Right Arm   |
+|-----------|------------|-------------|
+| Forwards  | W          | P           |
+| Left      | A          | L           |
+| Backwards | S          | ;           |
+| Right     | D          | '           |
+| Down      | Q          | O           |
+| Up        | E          | [           |
+| Jump      | Left Shift | Right Shift |
 
-## Game Mode Select:
-
-Click the bottom left button to switch on/off AI mode.
-
-## Game Play:
-
-![Game_Play](./Game_Play.png)
-
-The objectives of the game is to flip the table and crash it into scenery objects. And the score is show in the top of the screen.
+Click the "Toggle Controls" button at the bottom left to switch AI mode on/off.
